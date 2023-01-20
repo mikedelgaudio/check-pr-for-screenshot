@@ -14,6 +14,8 @@ async function run() {
       if (!context.payload.pull_request.body) {
         core.setFailed("The body of the PR is empty, can't check");
       } else {
+        core.debug("Latest");
+
         core.debug(context.payload);
         if (
           bodyContains &&
