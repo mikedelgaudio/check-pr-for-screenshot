@@ -21,7 +21,10 @@ async function run() {
         );
       } else {
         core.debug(JSON.stringify(context.payload));
-        if (checkForImage && !MARKDOWN_IMG_REGEX.test(bodyContains)) {
+        if (
+          checkForImage &&
+          !MARKDOWN_IMG_REGEX.test(context.payload.pull_request.body)
+        ) {
           core.notice(
             "Frontend PRs should include a screenshot for accessibility"
           );

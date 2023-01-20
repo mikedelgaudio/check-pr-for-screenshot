@@ -9839,7 +9839,10 @@ async function run() {
         );
       } else {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(JSON.stringify(context.payload));
-        if (checkForImage && !MARKDOWN_IMG_REGEX.test(bodyContains)) {
+        if (
+          checkForImage &&
+          !MARKDOWN_IMG_REGEX.test(context.payload.pull_request.body)
+        ) {
           _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice(
             "Frontend PRs should include a screenshot for accessibility"
           );
