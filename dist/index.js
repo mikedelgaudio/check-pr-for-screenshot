@@ -9841,7 +9841,7 @@ async function run() {
       } else {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(JSON.stringify(context.payload));
 
-        if (checkForImage && MARKDOWN_IMG_REGEX.test(bodyContains)) {
+        if (checkForImage && !MARKDOWN_IMG_REGEX.test(bodyContains)) {
           const pull_request_number = context.payload.pull_request.number;
           await octokit.rest.pulls.createReviewComment({
             ...context.repo,

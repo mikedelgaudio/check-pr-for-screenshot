@@ -23,7 +23,7 @@ async function run() {
       } else {
         core.info(JSON.stringify(context.payload));
 
-        if (checkForImage && MARKDOWN_IMG_REGEX.test(bodyContains)) {
+        if (checkForImage && !MARKDOWN_IMG_REGEX.test(bodyContains)) {
           const pull_request_number = context.payload.pull_request.number;
           await octokit.rest.pulls.createReviewComment({
             ...context.repo,
