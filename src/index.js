@@ -5,7 +5,7 @@ async function run() {
   try {
     // Get token
     const token = core.getInput("github-token", { required: true });
-    // const octokit = getOctokit(token);
+    const octokit = getOctokit(token);
 
     const MARKDOWN_IMG_REGEX_PATTERN =
       /!\[[^\]]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/;
@@ -27,12 +27,12 @@ async function run() {
             "Frontend PRs should include a screenshot for accessibility"
           );
 
-          // const pull_request_number = context.payload.pull_request.number;
-          // await octokit.rest.pulls.createReviewComment({
-          //   ...context.repo,
-          //   pull_number: pull_request_number,
-          //   body:
-          // });
+          const pull_request_number = context.payload.pull_request.number;
+          await octokit.rest.issues.createComment({
+            ...context.repo,
+            issue_number: pull_request_number,
+            body: "Frontend PRs should include a screenshot for accessibility",
+          });
         }
       }
     }
