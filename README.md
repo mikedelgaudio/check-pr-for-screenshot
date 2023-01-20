@@ -1,24 +1,27 @@
-# check-pr-for-screenshot
+# Check-PR-For-Image
 
-This action checks the body of a PR for a keyword that you've included a screenshot.
+This action checks the body of a PR for an attached image.
 
 ## Usage
 
-`bodyContains` allows you to detect if the body of PR has a certain word
+`checkForImage` allows you to detect if the body of PR has an image by matching Markdown Regex for an image. The bot leaves a comment on PR if no image is attached.
 
 ```yaml
-name: "Check PR for word"
+name: "Check-PR-For-Image"
 on:
   pull-request:
     types: [opened, edited, ready_for_review]
 
 jobs:
-  check_pr:
+  Check-PR-For-Image:
+    # Necessary for bot to write comments on PR reviews
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Check PR
-        uses: mikedelgaudio/check-pr-for-screenshot@v0
+        uses: mikedelgaudio/check-pr-for-screenshot@main
         with:
-          github-token: ${{github.token}}
-          bodyContains: "Test"
+          GITHUB_TOKEN: ${{github.token}}
+          checkForImage: true
 ```

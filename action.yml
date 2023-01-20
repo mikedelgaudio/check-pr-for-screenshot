@@ -1,5 +1,5 @@
-name: "Check PR for Screenshot"
-description: "Checks that a PR has a screenshot attached"
+name: "Check-PR-For-Image"
+description: "Checks that a PR has an attached image"
 author: "Mike DelGaudio"
 branding:
   icon: "git-pull-request"

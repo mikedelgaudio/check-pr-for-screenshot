@@ -9822,7 +9822,7 @@ const { getOctokit, context } = __nccwpck_require__(5438);
 async function run() {
   try {
     // Get token
-    const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("github-token", { required: true });
+    const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("GITHUB_TOKEN", { required: true });
     const octokit = getOctokit(token);
 
     const MARKDOWN_IMG_REGEX_PATTERN =
@@ -9830,16 +9830,15 @@ async function run() {
     const MARKDOWN_IMG_REGEX = new RegExp(MARKDOWN_IMG_REGEX_PATTERN, "g");
 
     // Check if the body contains required string from YAML config
-    const bodyContains = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("bodyContains");
     const checkForImage = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkForImage");
 
-    if (bodyContains || checkForImage) {
+    if (checkForImage) {
       if (!context.payload.pull_request.body) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(
           "PRs should have a message or body, please add a description before proceeding to help the other developers."
         );
       } else {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(JSON.stringify(context.payload));
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(JSON.stringify(context.payload));
         if (checkForImage && !MARKDOWN_IMG_REGEX.test(bodyContains)) {
           _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice(
             "Frontend PRs should include a screenshot for accessibility"
