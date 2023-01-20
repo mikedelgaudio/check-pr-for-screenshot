@@ -1,11 +1,11 @@
 import * as core from "@actions/core";
-const { GitHub, context } = require("@actions/github");
+const { getOctokit, context } = require("@actions/github");
 
 async function run() {
   try {
     // Get token
     const token = core.getInput("github-token", { required: true });
-    const github = new GitHub(token, {});
+    const octokit = getOctokit(token);
 
     const MARKDOWN_IMG_REGEX_PATTERN =
       /!\[[^\]]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/;
@@ -25,10 +25,9 @@ async function run() {
 
         if (checkForImage && MARKDOWN_IMG_REGEX.test(bodyContains)) {
           const pull_request_number = context.payload.pull_request.number;
-
-          const new_comment = github.issues.createComment({
+          await octokit.rest.pulls.createReviewComment({
             ...context.repo,
-            issue_number: pull_request_number,
+            pull_number: pull_request_number,
             body: "Frontend PRs should include a screenshot for accessibility",
           });
         }

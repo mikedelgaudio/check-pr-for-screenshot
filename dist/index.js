@@ -9817,13 +9817,13 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 
-const { GitHub, context } = __nccwpck_require__(5438);
+const { getOctokit, context } = __nccwpck_require__(5438);
 
 async function run() {
   try {
     // Get token
     const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("github-token", { required: true });
-    const github = new GitHub(token, {});
+    const octokit = getOctokit(token);
 
     const MARKDOWN_IMG_REGEX_PATTERN =
       /!\[[^\]]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/;
@@ -9843,10 +9843,9 @@ async function run() {
 
         if (checkForImage && MARKDOWN_IMG_REGEX.test(bodyContains)) {
           const pull_request_number = context.payload.pull_request.number;
-
-          const new_comment = github.issues.createComment({
+          await octokit.rest.pulls.createReviewComment({
             ...context.repo,
-            issue_number: pull_request_number,
+            pull_number: pull_request_number,
             body: "Frontend PRs should include a screenshot for accessibility",
           });
         }
