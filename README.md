@@ -10,7 +10,7 @@ This action checks the body of a PR for an attached image.
 name: "Check-PR-For-Image"
 on:
   pull-request:
-    types: [opened, edited, ready_for_review]
+    types: [opened, ready_for_review]
 
 jobs:
   Check-PR-For-Image:
