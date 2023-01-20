@@ -16,7 +16,7 @@ async function run() {
       } else {
         core.info("Latest");
 
-        core.info(context.payload);
+        core.info(JSON.stringify(context.payload));
         if (
           bodyContains &&
           context.payload.pull_request.body.indexOf(bodyContains) < 0

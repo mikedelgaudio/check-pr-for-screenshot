@@ -9834,7 +9834,7 @@ async function run() {
       } else {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Latest");
 
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(context.payload);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(JSON.stringify(context.payload));
         if (
           bodyContains &&
           context.payload.pull_request.body.indexOf(bodyContains) < 0
