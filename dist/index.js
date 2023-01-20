@@ -9817,29 +9817,38 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 
-const { context } = __nccwpck_require__(5438);
+const { GitHub, context } = __nccwpck_require__(5438);
 
 async function run() {
   try {
     // Get token
     const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("github-token", { required: true });
-    // const github = new GitHub(token, {});
+    const github = new GitHub(token, {});
 
-    // Check if the body contains required string
+    const MARKDOWN_IMG_REGEX_PATTERN =
+      /!\[[^\]]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/;
+    const MARKDOWN_IMG_REGEX = new RegExp(MARKDOWN_IMG_REGEX_PATTERN, "g");
+
+    // Check if the body contains required string from YAML config
     const bodyContains = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("bodyContains");
+    const checkForImage = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkForImage");
 
-    if (bodyContains) {
+    if (bodyContains || checkForImage) {
       if (!context.payload.pull_request.body) {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("The body of the PR is empty, can't check");
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(
+          "PRs should have a message or body, please add a description before proceeding to help the other developers."
+        );
       } else {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Latest");
-
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(JSON.stringify(context.payload));
-        if (
-          bodyContains &&
-          context.payload.pull_request.body.indexOf(bodyContains) < 0
-        ) {
-          _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("The body of the PR does not contain " + bodyContains);
+
+        if (checkForImage && MARKDOWN_IMG_REGEX.test(bodyContains)) {
+          const pull_request_number = context.payload.pull_request.number;
+
+          const new_comment = github.issues.createComment({
+            ...context.repo,
+            issue_number: pull_request_number,
+            body: "Frontend PRs should include a screenshot for accessibility",
+          });
         }
       }
     }
