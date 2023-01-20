@@ -6,13 +6,9 @@ branding:
   color: "gray-dark"
 inputs:
   github-token:
-    description: "Github token"
-  bodyContains:
-    description: "Word that must be contained in the PR body, can be left blank"
-
-outputs:
-  diff:
-    description: "Lines added to the PR"
+    description: "REQUIRED GitHub Token"
+  checkForImage:
+    description: "Boolean value 'true' or 'false' to check PR for image"
 
 runs:
   using: "node16"
