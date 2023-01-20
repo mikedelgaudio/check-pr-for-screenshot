@@ -9832,6 +9832,9 @@ async function run() {
       if (!context.payload.pull_request.body) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("The body of the PR is empty, can't check");
       } else {
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Latest");
+
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(context.payload);
         if (
           bodyContains &&
           context.payload.pull_request.body.indexOf(bodyContains) < 0
