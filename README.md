@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR
-        uses: mikedelgaudio/check-pr-for-screenshot@releases/v0
+        uses: mikedelgaudio/check-pr-for-screenshot@v0
         with:
           github-token: ${{github.token}}
           bodyContains: "Test"
