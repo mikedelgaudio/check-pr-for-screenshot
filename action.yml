@@ -5,7 +5,7 @@ branding:
   icon: "git-pull-request"
   color: "gray-dark"
 inputs:
-  github-token:
+  GITHUB_TOKEN:
     description: "REQUIRED GitHub Token"
   checkForImage:
     description: "Boolean value 'true' or 'false' to check PR for image"
