@@ -1,0 +1,26 @@
+{
+  "name": "check-pr-for-screenshot",
+  "version": "1.0.0",
+  "description": "GitHub Action that checks if a PR has a screenshot",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build src/index.js --license licenses.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikedelgaudio/check-pr-for-screenshot.git"
+  },
+  "author": "Mike DelGaudio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikedelgaudio/check-pr-for-screenshot/issues"
+  },
+  "homepage": "https://github.com/mikedelgaudio/check-pr-for-screenshot#readme",
+  "dependencies": {
+    "@actions/github": "^5.1.1"
+  },
+  "devDependencies": {
+    "@actions/core": "^1.10.0",
+    "@vercel/ncc": "^0.36.0"
+  }
+}

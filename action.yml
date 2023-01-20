@@ -1,0 +1,19 @@
+name: "Check PR for Screenshot"
+description: "Checks that a PR has a screenshot attached"
+author: "Mike DelGaudio"
+branding:
+  icon: "git-pull-request"
+  color: "gray-dark"
+inputs:
+  github-token:
+    description: "Github token"
+  bodyContains:
+    description: "Word that must be contained in the PR body, can be left blank"
+
+outputs:
+  diff:
+    description: "Lines added to the PR"
+
+runs:
+  using: "node16"
+  main: "dist/index.js"
