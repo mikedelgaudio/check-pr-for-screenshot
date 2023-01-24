@@ -9821,40 +9821,61 @@ const { getOctokit, context } = __nccwpck_require__(5438);
 
 async function run() {
   try {
-    // Get token
+    // Acquire GitHub Token
     const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("GITHUB_TOKEN", { required: true });
     const octokit = getOctokit(token);
 
+    // Regex Patterns
     const MARKDOWN_IMG_REGEX_PATTERN =
       /!\[[^\]]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/;
+    const HTML_IMG_REGEX_PATTERN = /<img([\w\W]+?)[\/]?>/;
+    const NOT_AVAILABLE_REGEX_PATTERN = /a11y:\s*N\/A/;
+    const A11Y_REGEX_PATTERN = /a11y/;
+
+    // Regex Objects
     const MARKDOWN_IMG_REGEX = new RegExp(MARKDOWN_IMG_REGEX_PATTERN, "g");
+    const HTML_IMG_REGEX = new RegExp(HTML_IMG_REGEX_PATTERN, "g");
+    const NOT_AVAILABLE_REGEX = new RegExp(NOT_AVAILABLE_REGEX_PATTERN, "gi");
+    const A11Y_REGEX = new RegExp(A11Y_REGEX_PATTERN, "gi");
 
-    // Check if the body contains required string from YAML config
+    // Acquire boolean from user's YAML workflow config
     const checkForImage = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkForImage");
+    if (!checkForImage) return;
 
-    if (checkForImage) {
-      if (!context.payload.pull_request.body) {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(
-          "PRs should have a message or body, please add a description before proceeding to help the other developers."
-        );
-      } else {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(JSON.stringify(context.payload));
-        if (
-          checkForImage &&
-          !MARKDOWN_IMG_REGEX.test(context.payload.pull_request.body)
-        ) {
-          _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice(
-            "Frontend PRs should include a screenshot for accessibility"
-          );
+    // Acquire body contents of PR in the form of a string
+    const PR_BODY_CONTENTS = context.payload.pull_request.body;
+    if (!PR_BODY_CONTENTS) {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(
+        "PRs should have a message or body, add a description before proceeding to help the other developers."
+      );
+      return;
+    }
 
-          const pull_request_number = context.payload.pull_request.number;
-          await octokit.rest.issues.createComment({
-            ...context.repo,
-            issue_number: pull_request_number,
-            body: "Frontend PRs should include a screenshot for accessibility",
-          });
-        }
-      }
+    // Ensure the developer adds the 'a11y' keyword to the PR body
+    if (!A11Y_REGEX.test(PR_BODY_CONTENTS)) {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(
+        "PRs must have the keyword `a11y` followed by 2 accessibility screenshots of before and after your changes. If you wish to disable this, update your PR message with `a11y: N/A`"
+      );
+      return;
+    }
+
+    // PR body contains 'a11y: N/A' option, do nothing
+    if (NOT_AVAILABLE_REGEX.test(PR_BODY_CONTENTS)) {
+      return;
+    }
+
+    if (
+      (PR_BODY_CONTENTS.match(MARKDOWN_IMG_REGEX) ?? []).length < 2 &&
+      (PR_BODY_CONTENTS.match(HTML_IMG_REGEX) ?? []).length < 2
+    ) {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice("Frontend PRs should include a screenshot for accessibility");
+
+      const pullRequestNumber = context.payload.pull_request.number;
+      await octokit.rest.issues.createComment({
+        ...context.repo,
+        issue_number: pullRequestNumber,
+        body: "Frontend PRs must include 2 screenshots for accessibility.\nEdit your PR message with screenshots of before and after your changes of the accessibility tool. If you wish to disable this, update your PR with `a11y: N/A`",
+      });
     }
   } catch (error) {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error.message);
@@ -9862,6 +9883,7 @@ async function run() {
 }
 
 run();
+// core.debug(JSON.stringify(context.payload));
 
 })();
 
