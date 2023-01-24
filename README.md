@@ -25,3 +25,17 @@ jobs:
           GITHUB_TOKEN: ${{github.token}}
           checkForImage: true
 ```
+
+## After setup, example PR message
+
+```markdown
+# Title Here
+
+## What's Changed:
+
+- Fixed big bug
+- Changed colors
+- Made things nice
+
+a11y: ![accessibility-screenshot-BEFORE-my-changes](https://your-image-url.com) ![accessibility-screenshot-AFTER-my-changes](https://your-image-url.com)
+```
