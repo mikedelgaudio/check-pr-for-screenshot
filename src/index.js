@@ -27,10 +27,10 @@ async function run() {
 
     core.debug(JSON.stringify(context.payload));
     // Optional ignore dependabot PRs
-    const prAuthor = context.payload.sender.login.toLowerCase();
+    const prAuthor = context.payload.pull_request.user.login.toLowerCase();
 
     core.notice("PR: " + prAuthor);
-    if (ignoreDependabot && prAuthor === "dependabot") return;
+    if (ignoreDependabot && prAuthor === "dependabot[bot]") return;
 
     // Acquire body contents of PR in the form of a string
     const PR_BODY_CONTENTS = context.payload.pull_request.body;
