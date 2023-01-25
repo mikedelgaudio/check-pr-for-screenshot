@@ -21,9 +21,9 @@ async function run() {
     const A11Y_REGEX = new RegExp(A11Y_REGEX_PATTERN, "gi");
 
     // Acquire booleans from user's YAML workflow config
-    const checkForImage = core.getBooleanInput("checkForImage") ?? true;
+    const checkForImages = core.getBooleanInput("checkForImages") ?? true;
     const ignoreDependabot = core.getBooleanInput("ignoreDependabot") ?? true;
-    if (!checkForImage) return;
+    if (!checkForImages) return;
 
     // Optional ignore dependabot PRs
     const prAuthor = context.payload.user.login.toLowerCase();

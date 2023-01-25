@@ -4,7 +4,7 @@ This action checks the body of a PR for two Markdown or HTML images attached aft
 
 ## Usage
 
-- `checkForImage`: detect if the body of PR has an image by matching Markdown or HTML Regex for an image. The bot leaves a comment on PR if no image is attached.
+- `checkForImages`: detect if the body of PR has an image by matching Markdown or HTML Regex for an image. The bot leaves a comment on PR if no image is attached.
 
 - `ignoreDependabot`: disables functionality on PRs authored by dependabot
 
@@ -25,7 +25,7 @@ jobs:
         uses: mikedelgaudio/check-pr-for-screenshot@main
         with:
           GITHUB_TOKEN: ${{github.token}}
-          checkForImage: true #default
+          checkForImages: true #default
           ignoreDependabot: true #default
 ```
 
