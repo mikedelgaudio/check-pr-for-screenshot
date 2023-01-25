@@ -9838,9 +9838,15 @@ async function run() {
     const NOT_AVAILABLE_REGEX = new RegExp(NOT_AVAILABLE_REGEX_PATTERN, "gi");
     const A11Y_REGEX = new RegExp(A11Y_REGEX_PATTERN, "gi");
 
-    // Acquire boolean from user's YAML workflow config
-    const checkForImage = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkForImage");
+    // Acquire booleans from user's YAML workflow config
+    const checkForImage = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkForImage") ?? true;
+    const ignoreDependabot = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("ignoreDependabot") ?? true;
     if (!checkForImage) return;
+
+    // Optional ignore dependabot PRs
+    const prAuthor = context.actor.toLowerCase();
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice("PR: " + prAuthor);
+    if (ignoreDependabot && prAuthor === "dependabot") return;
 
     // Acquire body contents of PR in the form of a string
     const PR_BODY_CONTENTS = context.payload.pull_request.body;
@@ -9864,10 +9870,14 @@ async function run() {
       return;
     }
 
-    if (
-      (PR_BODY_CONTENTS.match(MARKDOWN_IMG_REGEX) ?? []).length < 2 &&
-      (PR_BODY_CONTENTS.match(HTML_IMG_REGEX) ?? []).length < 2
-    ) {
+    let numberOfImagesFound = 0;
+    numberOfImagesFound += (PR_BODY_CONTENTS.match(MARKDOWN_IMG_REGEX) ?? [])
+      .length;
+    numberOfImagesFound += (PR_BODY_CONTENTS.match(HTML_IMG_REGEX) ?? [])
+      .length;
+
+    // Ensure PR message contains at least 2 markdown
+    if (numberOfImagesFound < 2) {
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice("Frontend PRs should include a screenshot for accessibility");
 
       const pullRequestNumber = context.payload.pull_request.number;
@@ -9883,7 +9893,6 @@ async function run() {
 }
 
 run();
-// core.debug(JSON.stringify(context.payload));
 
 })();
 

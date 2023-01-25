@@ -1,5 +1,5 @@
-name: "Check-PR-For-Image"
-description: "Checks that a PR has an attached image"
+name: "Check-PR-For-2-Accessibility-Images"
+description: "Checks that a PR has two accessibility images"
 author: "Mike DelGaudio"
 branding:
   icon: "git-pull-request"
@@ -7,8 +7,10 @@ branding:
 inputs:
   GITHUB_TOKEN:
     description: "REQUIRED GitHub Token"
-  checkForImage:
+  checkForImages:
     description: "Boolean value 'true' or 'false' to check PR for image"
+  ignoreDependabot:
+    description: "Boolean value 'true' or 'false' to ignore PRs authored by Dependabot"
 
 runs:
   using: "node16"
