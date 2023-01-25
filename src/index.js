@@ -25,7 +25,7 @@ async function run() {
     const ignoreDependabot = core.getBooleanInput("ignoreDependabot") ?? true;
     if (!checkForImages) return;
 
-    core.notice("PR: " + context.payload);
+    core.notice(JSON.stringify(context.payload));
     // Optional ignore dependabot PRs
     const prAuthor = context.payload.user.login.toLowerCase();
 
