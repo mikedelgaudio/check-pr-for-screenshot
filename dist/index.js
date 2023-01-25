@@ -9844,7 +9844,9 @@ async function run() {
     if (!checkForImage) return;
 
     // Optional ignore dependabot PRs
-    const prAuthor = context.actor.toLowerCase();
+    const prAuthor = context.payload.user.login.toLowerCase();
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice("PR: " + context.payload);
+
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice("PR: " + prAuthor);
     if (ignoreDependabot && prAuthor === "dependabot") return;
 

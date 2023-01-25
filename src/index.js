@@ -26,7 +26,9 @@ async function run() {
     if (!checkForImage) return;
 
     // Optional ignore dependabot PRs
-    const prAuthor = context.actor.toLowerCase();
+    const prAuthor = context.payload.user.login.toLowerCase();
+    core.notice("PR: " + context.payload);
+
     core.notice("PR: " + prAuthor);
     if (ignoreDependabot && prAuthor === "dependabot") return;
 
