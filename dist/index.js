@@ -9844,10 +9844,9 @@ async function run() {
     if (!checkForImages) return;
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(JSON.stringify(context.payload));
+
     // Optional ignore dependabot PRs
     const prAuthor = context.payload.pull_request.user.login.toLowerCase();
-
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.notice("PR: " + prAuthor);
     if (ignoreDependabot && prAuthor === "dependabot[bot]") return;
 
     // Acquire body contents of PR in the form of a string

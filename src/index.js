@@ -26,10 +26,9 @@ async function run() {
     if (!checkForImages) return;
 
     core.debug(JSON.stringify(context.payload));
+
     // Optional ignore dependabot PRs
     const prAuthor = context.payload.pull_request.user.login.toLowerCase();
-
-    core.notice("PR: " + prAuthor);
     if (ignoreDependabot && prAuthor === "dependabot[bot]") return;
 
     // Acquire body contents of PR in the form of a string
