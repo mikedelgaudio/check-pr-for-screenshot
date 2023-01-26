@@ -13,19 +13,31 @@ async function run() {
     const HTML_IMG_REGEX_PATTERN = /<img([\w\W]+?)[\/]?>/;
     const NOT_AVAILABLE_REGEX_PATTERN = /a11y:\s*N\/A/;
     const A11Y_REGEX_PATTERN = /a11y/;
+    // TODO Make this an argument from user's config
+    const HRO_TITLE_PATTERN = /(HRO-.{3,})|(HROIMP-.{3,})/;
 
     // Regex Objects
+    const HRO_TITLE_REGEX = new RegExp(HRO_TITLE_PATTERN, "g");
     const MARKDOWN_IMG_REGEX = new RegExp(MARKDOWN_IMG_REGEX_PATTERN, "g");
     const HTML_IMG_REGEX = new RegExp(HTML_IMG_REGEX_PATTERN, "g");
     const NOT_AVAILABLE_REGEX = new RegExp(NOT_AVAILABLE_REGEX_PATTERN, "gi");
     const A11Y_REGEX = new RegExp(A11Y_REGEX_PATTERN, "gi");
 
     // Acquire booleans from user's YAML workflow config
+    const checkPrTitle = core.getBooleanInput("checkPrTitle") ?? false;
     const checkForImages = core.getBooleanInput("checkForImages") ?? true;
     const ignoreDependabot = core.getBooleanInput("ignoreDependabot") ?? true;
     if (!checkForImages) return;
 
     core.debug(JSON.stringify(context.payload));
+
+    if (checkPrTitle) {
+      const title = context.payload.pull_request.title;
+      if (!HRO_TITLE_REGEX.test(title))
+        core.setFailed(
+          "PR titles must start with HRO-<JIRA#> or HROIMP-<JIRA#>"
+        );
+    }
 
     // Optional ignore dependabot PRs
     const prAuthor = context.payload.pull_request.user.login.toLowerCase();

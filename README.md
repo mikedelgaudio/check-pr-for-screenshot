@@ -4,7 +4,9 @@ This action checks the body of a PR for two Markdown or HTML images attached aft
 
 ## Usage
 
-- `checkForImages`: detect if the body of PR has an image by matching Markdown or HTML Regex for an image. The bot leaves a comment on PR if no image is attached.
+- `checkForImages`: detect if the body of PR has an image by matching Markdown or HTML Regex for an image. The bot leaves a comment on PR if no image is attached
+
+- `checkPrTitle`: detect if PR titles must start with `HRO-<JIRA#>` or `HROIMP-<JIRA#>`
 
 - `ignoreDependabot`: disables functionality on PRs authored by dependabot
 
@@ -12,7 +14,7 @@ This action checks the body of a PR for two Markdown or HTML images attached aft
 name: "Check-PR-For-Image"
 on:
   pull-request:
-    types: [opened, ready_for_review]
+    types: [opened, edited, ready_for_review]
 
 jobs:
   Check-PR-For-Image:
@@ -26,6 +28,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{github.token}}
           checkForImages: true #default
+          checkPrTitle: false #default
           ignoreDependabot: true #default
 ```
 
@@ -38,7 +41,7 @@ There are three use cases a PR message may contain:
 - No `a11y` tag auto fails the PR
 
 ```markdown
-# Title Here
+# HRO-XYZ Title Here
 
 ## What's Changed:
 
