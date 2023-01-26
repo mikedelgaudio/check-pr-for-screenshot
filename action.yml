@@ -9,8 +9,6 @@ inputs:
     description: "REQUIRED GitHub Token"
   checkForImages:
     description: "Boolean value 'true' or 'false' to check PR for image"
-  checkPrTitle:
-    description: "Boolean value 'true' or 'false' to check if PR title starts with HRO-<JIRA#> or HROIMP-<JIRA#>"
   ignoreDependabot:
     description: "Boolean value 'true' or 'false' to ignore PRs authored by Dependabot"
 

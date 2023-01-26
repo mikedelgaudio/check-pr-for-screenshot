@@ -9831,30 +9831,18 @@ async function run() {
     const HTML_IMG_REGEX_PATTERN = /<img([\w\W]+?)[\/]?>/;
     const NOT_AVAILABLE_REGEX_PATTERN = /a11y:\s*N\/A/;
     const A11Y_REGEX_PATTERN = /a11y/;
-    // TODO Make this an argument from user's config
-    const HRO_TITLE_PATTERN = /(HRO-.{3,})|(HROIMP-.{3,})/;
 
     // Regex Objects
-    const HRO_TITLE_REGEX = new RegExp(HRO_TITLE_PATTERN, "g");
     const MARKDOWN_IMG_REGEX = new RegExp(MARKDOWN_IMG_REGEX_PATTERN, "g");
     const HTML_IMG_REGEX = new RegExp(HTML_IMG_REGEX_PATTERN, "g");
     const NOT_AVAILABLE_REGEX = new RegExp(NOT_AVAILABLE_REGEX_PATTERN, "gi");
     const A11Y_REGEX = new RegExp(A11Y_REGEX_PATTERN, "gi");
 
     // Acquire booleans from user's YAML workflow config
-    const checkPrTitle = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkPrTitle") ?? false;
     const checkForImages = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkForImages") ?? true;
     const ignoreDependabot = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("ignoreDependabot") ?? true;
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(JSON.stringify(context.payload));
-
-    if (checkPrTitle) {
-      const title = context.payload.pull_request.title;
-      if (!HRO_TITLE_REGEX.test(title))
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(
-          "PR titles must start with HRO-<JIRA#> or HROIMP-<JIRA#>"
-        );
-    }
 
     if (!checkForImages) return;
 

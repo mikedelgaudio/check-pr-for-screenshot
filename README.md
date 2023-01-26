@@ -6,18 +6,16 @@ This action checks the body of a PR for two Markdown or HTML images attached aft
 
 - `checkForImages`: detect if the body of PR has an image by matching Markdown or HTML Regex for an image. The bot leaves a comment on PR if no image is attached
 
-- `checkPrTitle`: detect if PR titles must start with `HRO-<JIRA#>` or `HROIMP-<JIRA#>`
-
 - `ignoreDependabot`: disables functionality on PRs authored by dependabot
 
 ```yaml
-name: "Check-PR-For-Image"
+name: " Check-PR-For-2-Accessibility-Images"
 on:
   pull-request:
     types: [opened, edited, ready_for_review]
 
 jobs:
-  Check-PR-For-Image:
+  Check-PR-For-2-Accessibility-Images:
     # Necessary for bot to write comments on PR reviews
     permissions:
       pull-requests: write
@@ -28,7 +26,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{github.token}}
           checkForImages: true #default
-          checkPrTitle: false #default
           ignoreDependabot: true #default
 ```
 
