@@ -27,7 +27,6 @@ async function run() {
     const checkPrTitle = core.getBooleanInput("checkPrTitle") ?? false;
     const checkForImages = core.getBooleanInput("checkForImages") ?? true;
     const ignoreDependabot = core.getBooleanInput("ignoreDependabot") ?? true;
-    if (!checkForImages) return;
 
     core.debug(JSON.stringify(context.payload));
 
@@ -38,6 +37,8 @@ async function run() {
           "PR titles must start with HRO-<JIRA#> or HROIMP-<JIRA#>"
         );
     }
+
+    if (!checkForImages) return;
 
     // Optional ignore dependabot PRs
     const prAuthor = context.payload.pull_request.user.login.toLowerCase();

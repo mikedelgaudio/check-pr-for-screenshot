@@ -9845,7 +9845,6 @@ async function run() {
     const checkPrTitle = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkPrTitle") ?? false;
     const checkForImages = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("checkForImages") ?? true;
     const ignoreDependabot = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("ignoreDependabot") ?? true;
-    if (!checkForImages) return;
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(JSON.stringify(context.payload));
 
@@ -9856,6 +9855,8 @@ async function run() {
           "PR titles must start with HRO-<JIRA#> or HROIMP-<JIRA#>"
         );
     }
+
+    if (!checkForImages) return;
 
     // Optional ignore dependabot PRs
     const prAuthor = context.payload.pull_request.user.login.toLowerCase();
